@@ -2,6 +2,7 @@ use crate::error::Result;
 use crate::types::{CreateWebhookRequest, EditWebhookRequest, Webhook};
 use crate::Helius;
 
+use log::debug;
 use reqwest::{Method, Url};
 
 impl Helius {
@@ -19,7 +20,7 @@ impl Helius {
         );
 
         let parsed_url: Url = Url::parse(&url).expect("Failed to parse URL");
-        println!("PARSED URL: {}", parsed_url);
+        debug!("PARSED URL: {}", parsed_url);
 
         self.rpc_client
             .handler

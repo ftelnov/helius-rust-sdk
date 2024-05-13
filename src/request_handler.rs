@@ -1,4 +1,5 @@
 use crate::error::{HeliusError, Result};
+use log::{debug, error};
 use reqwest::{Client, Method, RequestBuilder, Response, StatusCode, Url};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
@@ -66,7 +67,7 @@ impl RequestHandler {
 
         let response: Response = self.send_request(request_builder).await?;
 
-        print!("RESPONSE {:?}", response);
+        debug!("RESPONSE {:?}", response);
 
         self.handle_response(response).await
     }
@@ -89,16 +90,16 @@ impl RequestHandler {
         let path: String = response.url().path().to_string();
         let body_text: String = response.text().await.unwrap_or_default();
 
-        println!("STATUS {}", status);
-        println!("PATH {}", path);
-        println!("BODY {}", body_text);
+        debug!("STATUS {}", status);
+        debug!("PATH {}", path);
+        debug!("BODY {}", body_text);
 
         if status.is_success() {
             match serde_json::from_str::<T>(&body_text) {
                 Ok(data) => Ok(data),
                 Err(e) => {
-                    println!("Deserialization error: {}", e);
-                    println!("Raw JSON: {}", body_text);
+                    error!("Deserialization error: {}", e);
+                    debug!("Raw JSON: {}", body_text);
                     Err(HeliusError::from(e))
                 }
             }

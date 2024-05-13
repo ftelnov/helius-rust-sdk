@@ -2,6 +2,7 @@ use crate::error::Result;
 use crate::types::{EnhancedTransaction, ParseTransactionsRequest};
 use crate::Helius;
 
+use log::debug;
 use reqwest::{Method, Url};
 
 impl Helius {
@@ -18,7 +19,7 @@ impl Helius {
             self.config.endpoints.api, self.config.api_key
         );
 
-        println!("{}", url);
+        debug!("{}", url);
         let parsed_url: Url = Url::parse(&url).expect("Failed to parse URL");
 
         self.rpc_client

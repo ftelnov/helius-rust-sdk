@@ -2029,6 +2029,7 @@ name = "helius"
 version = "0.1.2"
 dependencies = [
  "chrono",
+ "log",
  "mockito",
  "reqwest 0.12.4",
  "serde",

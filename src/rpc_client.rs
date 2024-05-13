@@ -30,6 +30,7 @@ use crate::types::{
     GetTokenAccounts, SearchAssets, TokenAccountsList, TransactionSignatureList,
 };
 
+use log::debug;
 use reqwest::{Client, Method, Url};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
@@ -84,14 +85,14 @@ impl RpcClient {
         let base_url: String = format!("{}/?api-key={}", self.config.endpoints.rpc, self.config.api_key);
         let url: Url = Url::parse(&base_url).expect("Failed to parse URL");
 
-        println!("{}", base_url);
-        println!("{}", url);
+        debug!("{}", base_url);
+        debug!("{}", url);
 
         let rpc_request: RpcRequest<R> = RpcRequest::new(method.to_string(), request);
-        println!("Serialized Request: {:?}", serde_json::to_string(&rpc_request));
+        debug!("Serialized Request: {:?}", serde_json::to_string(&rpc_request));
 
         let rpc_response: RpcResponse<T> = self.handler.send(Method::POST, url, Some(&rpc_request)).await?;
-        println!("RPCRESPONSE {:?}", rpc_response.result);
+        debug!("RPCRESPONSE {:?}", rpc_response.result);
         Ok(rpc_response.result)
     }
 
